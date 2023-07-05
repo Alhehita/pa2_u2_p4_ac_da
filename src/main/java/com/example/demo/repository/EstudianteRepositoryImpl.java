@@ -134,28 +134,91 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
 	@Override
 	public Estudiante seleccionarPorapellidoCriterialAPIQuery(String apellido) {
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-		
-		//1. Especificar el tipo de retorno que tiene mi Query
-		
+
+		// 1. Especificar el tipo de retorno que tiene mi Query
+
 		CriteriaQuery<Estudiante> criteriaQuery = builder.createQuery(Estudiante.class);
-		
-		//2. Empezamos a crear el SQL
-		//2.1 definimos el FROM (Root)
-		
+
+		// 2. Empezamos a crear el SQL
+		// 2.1 definimos el FROM (Root)
+
 		Root<Estudiante> miTablaFrom = criteriaQuery.from(Estudiante.class); // FROM estudiante
-		
-		//3. Construir las condiciones del SQL, las condiciones se las conoce como predicados
+
+		// 3. Construir las condiciones del SQL, las condiciones se las conoce como
+		// predicados
 		// cada condicion es un predicado
-		//e.apellido = :datoApellido
+		// e.apellido = :datoApellido
 		Predicate condicionApellido = builder.equal(miTablaFrom.get("apellido"), apellido);
-		
-		//4.Armamos mi SQL final
+
+		// 4.Armamos mi SQL final
 		criteriaQuery.select(miTablaFrom).where(condicionApellido);
-		
-		//5. ejecucion del query lo realizamos con TypedQuery
+
+		// 5. ejecucion del query lo realizamos con TypedQuery
 		TypedQuery<Estudiante> queryFinal = this.entityManager.createQuery(criteriaQuery);
-		
+
 		return queryFinal.getSingleResult();
+	}
+
+	@Override
+	public Estudiante seleccionarEstudianteDinamico(String nombre, String apellido, Double peso) {
+
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		// 1. Especificar el tipo de retorno que tiene mi Query
+
+		CriteriaQuery<Estudiante> criteriaQuery = builder.createQuery(Estudiante.class);
+
+		// 2. Empezamos a crear el SQL
+		// 2.1 definimos el FROM (Root)
+
+		Root<Estudiante> miTablaFrom = criteriaQuery.from(Estudiante.class); // FROM estudiante
+
+		// 3. Construir las condiciones del SQL, las condiciones se las conoce como
+		// predicados
+
+		// > 100 e.nombre = ? AND e.apellido= ?
+		// <= 100 e.nombre = ? OR e.apellido = ?
+
+		// e.nombre = ?
+		Predicate pNombre = builder.equal(miTablaFrom.get("nombre"), nombre);
+		// e.apellido= ?
+		Predicate pApellido = builder.equal(miTablaFrom.get("apellido"), apellido);
+
+		Predicate predicadoFinal = null;
+		if (peso.compareTo(Double.valueOf(100)) <= 0) {
+			predicadoFinal = builder.or(pNombre, pApellido);
+		} else {
+			predicadoFinal = builder.and(pNombre, pApellido);
+		}
+
+		// 4.Armamos mi SQL final
+		criteriaQuery.select(miTablaFrom).where(predicadoFinal);
+
+		// 5. ejecucion del query lo realizamos con TypedQuery
+		TypedQuery<Estudiante> queryFinal = this.entityManager.createQuery(criteriaQuery);
+
+		return queryFinal.getSingleResult();
+	}
+
+	@Override
+	public int eliminarPorNombre(String nombre) {
+		//DELETE FROM estudiante WHERE estu_nombre = ?
+		//DELETE FROM estuadiante e WHERE e.nombre = :datoNombre
+		
+		Query query = this.entityManager.createQuery("DELETE FROM Estudiante e WHERE e.nombre = :datoNombre");
+		query.setParameter("datoNombre", nombre);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public int actualizarPorApellido(String nombre,String apellido) {
+		//UPDATE estudiante SET estu_nombre = ? WHERE estu_apellido
+		
+		//UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido
+		
+		Query query = this.entityManager.createQuery("UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido");
+		query.setParameter("datoApellido", apellido);
+		query.setParameter("datoNombre", nombre);
+		return query.executeUpdate();		
 	}
 
 }

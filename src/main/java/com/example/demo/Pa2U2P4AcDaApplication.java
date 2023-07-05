@@ -23,24 +23,41 @@ public class Pa2U2P4AcDaApplication implements CommandLineRunner {
 		// TODO Auto-generated method stub
 
 		Estudiante estudiante = new Estudiante();
-		estudiante.setApellido("Guamaninga");
-		estudiante.setCedula("0123456789");
-		estudiante.setNombre("Alfredo");
+		estudiante.setApellido("Naranjo");
+		estudiante.setCedula("5674912");
+		estudiante.setNombre("Anthony");
+		estudiante.setPeso(70.2);
 
-		//this.estudianteService.guardar(estudiante);
+		Estudiante estudiante1 = new Estudiante();
+		estudiante1.setApellido("Arteaga");
+		estudiante1.setCedula("5674456");
+		estudiante1.setNombre("Jhon");
+		estudiante1.setPeso(102.6);
 
-		this.estudianteService.buscarPorApellidoNamed("Naranjito");
+		// this.estudianteService.guardar(estudiante);
 
-		this.estudianteService.buscarPorApellidoNamedQuery("Naranjito");
+		// this.estudianteService.guardar(estudiante1);
 
-		this.estudianteService.buscarPorApellidoNativeQuery("Naranjito");
+		Estudiante estudiante2 = this.estudianteService.buscarEstudianteDinamico("Anthony", "Naranjo",
+				50.2);
 		
-		this.estudianteService.buscarPorApellidoNativeQueryNamed("Guamaninga");
-		System.out.println("----");
-		this.estudianteService.buscarPorNombreNativeQuery("Alfredo");
-		
-		this.estudianteService.buscarPorNombreNamedQuery("Alfredo");
+		System.out.println(estudiante2);
 
+		
+		Estudiante estudiante3 = this.estudianteService.buscarEstudianteDinamico("Jhon", "Arteaga",150.2);
+		
+		System.out.println(estudiante3);
+		
+		
+		int borrar = this.estudianteService.borrarPorNombre("Cristiana");
+		
+		int actualizar = this.estudianteService.actualizarPorApellido("Jairo", "Arteaga");
+		
+		System.out.println(borrar);
+		
+		System.out.println(actualizar);
+		
+		
 	}
 
 }
