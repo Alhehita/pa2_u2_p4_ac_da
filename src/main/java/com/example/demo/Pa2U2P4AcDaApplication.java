@@ -1,18 +1,36 @@
 package com.example.demo;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.Habitacion;
+import com.example.demo.repository.modelo.Hotel;
+import com.example.demo.repository.modelo.Matricula;
 import com.example.demo.service.EstudianteService;
+import com.example.demo.service.HabitacionService;
+import com.example.demo.service.HotelService;
+import com.example.demo.service.MatriculaService;
 
 @SpringBootApplication
 public class Pa2U2P4AcDaApplication implements CommandLineRunner {
 
 	@Autowired
 	EstudianteService estudianteService;
+
+	@Autowired
+	MatriculaService matriculaService;
+
+	@Autowired
+	HotelService hotelService;
+	
+	@Autowired
+	HabitacionService habitacionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U2P4AcDaApplication.class, args);
@@ -22,42 +40,33 @@ public class Pa2U2P4AcDaApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
 
-		Estudiante estudiante = new Estudiante();
-		estudiante.setApellido("Naranjo");
-		estudiante.setCedula("5674912");
-		estudiante.setNombre("Anthony");
-		estudiante.setPeso(70.2);
+		Hotel hotel = new Hotel();
+		hotel.setDireccion("La planada");
+		hotel.setNombre("Hotel hotel");
 
-		Estudiante estudiante1 = new Estudiante();
-		estudiante1.setApellido("Arteaga");
-		estudiante1.setCedula("5674456");
-		estudiante1.setNombre("Jhon");
-		estudiante1.setPeso(102.6);
+		Habitacion habitacion = new Habitacion();
 
-		// this.estudianteService.guardar(estudiante);
+		habitacion.setHotel(hotel);
+		habitacion.setNumero("12");
+		habitacion.setValor(new BigDecimal(25));
 
-		// this.estudianteService.guardar(estudiante1);
+		List<Habitacion> habitaciones = new ArrayList<>();
+		habitaciones.add(habitacion);
 
-		Estudiante estudiante2 = this.estudianteService.buscarEstudianteDinamico("Anthony", "Naranjo",
-				50.2);
+		hotel.setHabitaciones(habitaciones);
 		
-		System.out.println(estudiante2);
+		this.hotelService.agregar(hotel);
+		
+		
 
-		
-		Estudiante estudiante3 = this.estudianteService.buscarEstudianteDinamico("Jhon", "Arteaga",150.2);
-		
-		System.out.println(estudiante3);
-		
-		
-		int borrar = this.estudianteService.borrarPorNombre("Cristiana");
-		
-		int actualizar = this.estudianteService.actualizarPorApellido("Jairo", "Arteaga");
-		
-		System.out.println(borrar);
-		
-		System.out.println(actualizar);
-		
-		
+		// System.out.println( this.estudianteService.buscarTodosDTO());
+
+		// System.out.println(this.matriculaService.buscarTodosDTO());
+
+		//System.out.println(this.hotelService.buscarPorNombre("Hotel hotel"));
+		System.out.println("impresion ");
+		System.out.println(this.habitacionService.buscarPorId(habitacion.getId()));
+
 	}
 
 }

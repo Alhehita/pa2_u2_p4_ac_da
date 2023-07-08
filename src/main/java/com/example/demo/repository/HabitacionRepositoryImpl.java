@@ -40,4 +40,9 @@ public class HabitacionRepositoryImpl implements HabitacionRepository {
 		return this.entityManager.find(Habitacion.class, numero);
 	}
 
+	@Override
+	public Habitacion seleccionarPorId(Integer id) {
+		return this.entityManager.find(Habitacion.class, id.SIZE);
+	}
+
 }

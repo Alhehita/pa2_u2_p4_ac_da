@@ -38,6 +38,8 @@ public class HotelRepositoryImpl implements HotelRepository{
 	@Override
 	public Hotel seleccionarPorNombre(String nombre) {
 		return this.entityManager.find(Hotel.class, nombre);
+		
+		
 	}
 
 }

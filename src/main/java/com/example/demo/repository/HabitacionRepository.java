@@ -11,6 +11,8 @@ public interface HabitacionRepository {
 	public void eliminar(String numero);
 
 	public Habitacion seleccionarPorNumero(String numero);
+	
+	public Habitacion seleccionarPorId(Integer id);
 
 
 

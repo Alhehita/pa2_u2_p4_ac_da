@@ -11,6 +11,11 @@ public interface HotelRepository {
 	public void eliminar(String nombre);
 
 	public Hotel seleccionarPorNombre(String nombre);
+	
+	
+	
+	
+	
 
 
 

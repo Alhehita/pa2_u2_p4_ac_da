@@ -2,10 +2,10 @@ package com.example.demo.repository;
 
 import java.util.List;
 
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder.Builder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.dto.EstudianteDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -45,7 +45,7 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
 
 		// this.entityManager.find(Estudiante.class, cedula);
 		return this.entityManager.find(Estudiante.class, cedula); // indica que se va a trabajar con una clase
-																	// Estuidiante
+																		// Estuidiante
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
 
 	@Override
 	public Estudiante seleccionarPorNombreNativeQuery(String nombre) {
-		Query query = this.entityManager.createNamedQuery("Estudiante.buscarPorNombreNative", Estudiante.class);
+		Query query = this.entityManager.createNamedQuery("Estudiante.buscarPorNombreNative", EstudianteDTO.class);
 		query.setParameter("datoNombre", nombre);
 
 		return (Estudiante) query.getSingleResult();
@@ -201,24 +201,33 @@ public class EstudianteRepositoryImpl implements EstudianteRepository {
 
 	@Override
 	public int eliminarPorNombre(String nombre) {
-		//DELETE FROM estudiante WHERE estu_nombre = ?
-		//DELETE FROM estuadiante e WHERE e.nombre = :datoNombre
-		
+		// DELETE FROM estudiante WHERE estu_nombre = ?
+		// DELETE FROM estuadiante e WHERE e.nombre = :datoNombre
+
 		Query query = this.entityManager.createQuery("DELETE FROM Estudiante e WHERE e.nombre = :datoNombre");
 		query.setParameter("datoNombre", nombre);
 		return query.executeUpdate();
 	}
 
 	@Override
-	public int actualizarPorApellido(String nombre,String apellido) {
-		//UPDATE estudiante SET estu_nombre = ? WHERE estu_apellido
-		
-		//UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido
-		
-		Query query = this.entityManager.createQuery("UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido");
+	public int actualizarPorApellido(String nombre, String apellido) {
+		// UPDATE estudiante SET estu_nombre = ? WHERE estu_apellido
+
+		// UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido
+
+		Query query = this.entityManager
+				.createQuery("UPDATE Estudiante e SET e.nombre= :datoNombre WHERE e.apellido= :datoApellido");
 		query.setParameter("datoApellido", apellido);
 		query.setParameter("datoNombre", nombre);
-		return query.executeUpdate();		
+		return query.executeUpdate();
+	}
+
+	@Override
+	public List<EstudianteDTO> seleccionarTodosDTO() {
+		TypedQuery<EstudianteDTO> query = this.entityManager.createQuery("SELECT NEW com.example.demo.repository.modelo.dto.EstudianteDTO(e.nombre, e.apellido)  FROM Estudiante e",
+				EstudianteDTO.class);
+
+		return query.getResultList();
 	}
 
 }

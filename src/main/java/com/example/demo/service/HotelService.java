@@ -11,4 +11,6 @@ public interface HotelService {
 	public void borrar(String nombre);
 
 	public Hotel buscarPorNombre(String nombre);
+	
+	
 }

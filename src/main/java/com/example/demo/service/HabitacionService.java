@@ -11,5 +11,7 @@ public interface HabitacionService {
 	public void borrar(String numero);
 
 	public Habitacion buscarPorNumero(String numero);
+	
+	public Habitacion buscarPorId(Integer id);
 
 }

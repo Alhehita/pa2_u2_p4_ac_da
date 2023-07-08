@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.dto.EstudianteDTO;
 
 public interface EstudianteService {
 
@@ -41,5 +42,7 @@ public interface EstudianteService {
 	public int borrarPorNombre(String nombre);
 	
 	public int actualizarPorApellido(String nombre,String apellido);
+	
+	public List<EstudianteDTO> buscarTodosDTO();
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.repository.modelo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,10 +12,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 @Entity
-@Table(name = "habitacion")
+@Table(name = "hotel")
 public class Hotel {
-	@GeneratedValue(generator = "seq_habitacion", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "seq_habitacion", sequenceName = "seq_habitacion", allocationSize = 1)
+	@GeneratedValue(generator = "seq_hotel", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "seq_hotel", sequenceName = "seq_hotel", allocationSize = 1)
 	@Id
 	@Column(name = "hote_id")
 	private Integer id;
@@ -25,7 +26,7 @@ public class Hotel {
 	@Column(name = "hote_direccion")
 	private String direccion;
 
-	@OneToMany(mappedBy = "hotel")
+	@OneToMany(mappedBy = "hotel", cascade =  CascadeType.ALL)
 	private List<Habitacion> habitaciones;
 
 	
